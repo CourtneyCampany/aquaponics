@@ -20,7 +20,6 @@ biomasslab <- "Total Biomass (g)"
 boxlabs <- c("Aquaponics", "Containerized")
 
 
-
 #lettuce stats and graphs ----------
 lettuceaqua <- biomass[biomass$species == "S" & biomass$treatment == "A",]
 lettucesoil <- biomass[biomass$species == "S" & biomass$treatment == "C",]
@@ -40,31 +39,60 @@ lettuce_ttest_ratio <- t.test(lettuceaqua$rs_ratio, lettucesoil$rs_ratio,
 ##all variables are different, including root shoot ratio
 
 lettuce <- biomass[biomass$species == "S",]
-mean(lettuceaqua$rs_ratio)
-mean(lettucesoil$rs_ratio)
+mean(lettuceaqua$rs_ratio) #.178
+mean(lettucesoil$rs_ratio) #.427
+mean(lettuceaqua$totalbiomass) #6.32
+mean(lettucesoil$totalbiomass) #1.67
 
-#lettuce root to shoot
-par(mgp=c(2.5,.75,0), mar=c(4,4,1,1), cex.lab=1.1)
-boxplot(lettuce$rs_ratio ~ treatment, data=lettuce, xaxt='n',varwidth=TRUE,
-        ylab=ratio_lab,border=trtcols,ylim=c(0,.8),xlab="",outline=FALSE,
-        boxlwd=2, whisklwd=2,staplelwd=2)
-axis(1, boxlabs, at=1:2, cex=1.1)
-stripchart(lettuce$rs_ratio ~ treatment, data = lettuce,
-           vertical = TRUE, method = "jitter",cex=1.25,
-           pch = 16,  col= trtcols2, xaxt='n', add=TRUE) 
-text(.65, .7, "Salanova")
+mass_perc <- data.frame(treatment=as.factor(lettuce$treatment), 
+                        shoots_perc = with(lettuce, aboveground/totalbiomass),
+                        roots_perc = with(lettuce, roots/totalbiomass))
+mass_perc_agg <- doBy::summaryBy(.~treatment, data=mass_perc, FUN = mean)
+mass_perc2 <- mass_perc_agg[,2:3]
+i=c(2,1)
+
+
+windows(12,6)
+
+jpeg(filename = "output/lettuce_biomass.jpeg",
+     width = 12, height = 6, units = "in", res= 500)
+
+par(mfrow=c(1,2))
 
 #lettuce totalbiomass
-par(mgp=c(2.5,.75,0), mar=c(4,4,1,1), cex.lab=1.1)
+par(mgp=c(2.5,.75,0), mar=c(4,4,1,1), cex.lab=1.1, font.lab = 2)
 boxplot(biomass$totalbiomass ~ treatment, data=biomass, xaxt='n',varwidth=TRUE,
         ylab=biomasslab,border=trtcols,ylim=c(0,15),xlab="",outline=FALSE,
         boxlwd=2, whisklwd=2,staplelwd=2)
-axis(1, boxlabs, at=1:2, cex=1.1)
+axis(1, boxlabs, at=1:2, cex=1.1, font=2)
 stripchart(biomass$totalbiomass ~ treatment, data = biomass,
            vertical = TRUE, method = "jitter",cex=1.25,
            pch = 16,  col= trtcols2, xaxt='n', add=TRUE) 
-text(2.25, 14, "p<0.0001")
-text(.65, 14, "Salanova")
+text(2.25, 14.5, expression(paste(italic(P)," < "," 0.001")))
+text(.5, 14.5, "A",cex=1.51)
+
+par(mar = c(4, 4, 1, 7.3), xpd = TRUE,cex.lab=1.1, font.lab = 2)
+barplot(t(as.matrix(mass_perc2))[i,], names.arg=boxlabs, col=plantcols, width=2, xlab= "", 
+        ylab="Biomass Partitioning (%)", ylim=c(0, 1), xaxt = 'n')
+box()
+axis(1, boxlabs, at=c(1.35, 3.85), font=2)
+legend("topright", inset = c(-0.305, 0), fill = c(plantcols[2],plantcols[1]), legend=treelab, cex=1)
+text(.75 ,.94, "B", cex=1.51)
+
+dev.off()
+
+
+# #lettuce root to shoot
+# par(mgp=c(2.5,.75,0), mar=c(4,4,1,1), cex.lab=1.1)
+# boxplot(lettuce$rs_ratio ~ treatment, data=lettuce, xaxt='n',varwidth=TRUE,
+#         ylab=ratio_lab,border=trtcols,ylim=c(0,.8),xlab="",outline=FALSE,
+#         boxlwd=2, whisklwd=2,staplelwd=2)
+# axis(1, boxlabs, at=1:2, cex=1.1)
+# stripchart(lettuce$rs_ratio ~ treatment, data = lettuce,
+#            vertical = TRUE, method = "jitter",cex=1.25,
+#            pch = 16,  col= trtcols2, xaxt='n', add=TRUE) 
+# text(.65, .7, "Salanova")
+
 
 #pac choy stats and graphs ----------
 pacaqua <- biomass[biomass$species == "P" & biomass$treatment == "A",]
@@ -154,3 +182,7 @@ stripchart(broccoli$totalbiomass ~ treatment, data = broccoli,
            vertical = TRUE, method = "jitter",cex=1.25,
            pch = 16,  col= trtcols2, xaxt='n', add=TRUE) 
 text(.65, 11, "Broccoli")
+
+
+##combined boxplot
+
