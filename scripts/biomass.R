@@ -30,7 +30,7 @@ lettuce_ttest <- t.test(lettuceaqua$totalbiomass, lettucesoil$totalbiomass,
 lettuce_ttest_roots <- t.test(lettuceaqua$roots, lettucesoil$roots, 
                         alternative = "two.sided")
 
-lettuce_ttest_above <- t.test(lettuceaqua$aboveground, lettucesoil$aoveground, 
+lettuce_ttest_above <- t.test(lettuceaqua$aboveground, lettucesoil$aboveground, 
                               alternative = "two.sided")
 
 lettuce_ttest_ratio <- t.test(lettuceaqua$rs_ratio, lettucesoil$rs_ratio, 
@@ -104,7 +104,7 @@ pac_ttest <- t.test(pacaqua$totalbiomass, pacsoil$totalbiomass,
 pac_ttest_roots <- t.test(pacaqua$roots, pacsoil$roots, 
                               alternative = "two.sided")
 
-pac_ttest_above <- t.test(pacaqua$aboveground, pacsoil$aoveground, 
+pac_ttest_above <- t.test(pacaqua$aboveground, pacsoil$aboveground, 
                               alternative = "two.sided")
 
 pac_ttest_ratio <- t.test(pacaqua$rs_ratio, pacsoil$rs_ratio, 
@@ -149,7 +149,7 @@ broc_ttest <- t.test(brocaqua$totalbiomass, brocsoil$totalbiomass,
 broc_ttest_roots <- t.test(brocaqua$roots, brocsoil$roots, 
                           alternative = "two.sided")
 
-broc_ttest_above <- t.test(brocaqua$aboveground, brocsoil$aoveground, 
+broc_ttest_above <- t.test(brocaqua$aboveground, brocsoil$aboveground, 
                           alternative = "two.sided")
 
 broc_ttest_ratio <- t.test(brocaqua$rs_ratio, brocsoil$rs_ratio, 

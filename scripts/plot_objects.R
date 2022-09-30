@@ -7,12 +7,24 @@ trtcols <- c(wp1[2], wp2[5])
 trtcols2 <- scales::alpha(trtcols, .6)
 plantcols <- c( "darkgoldenrod4","forestgreen")
 
+pchs=c(15,16,17)
+
+specieslabs <- c("Broccoli", "Pac Choy", "Salanova")
 
 ratio_lab <- "Root to Shoot ratio"
 biomasslab <- "Total Biomass (g)"
 boxlabs <- c("Aquaponics", "Containerized")
 satlab <- expression(italic(A)[sat]~~(mu*mol~m^-2~s^-1))
 condlab <- expression(italic(g)[s]~~(mol~m^-2~s^-1))
+photolab <- expression(italic(A[n])~~(mu*mol~m^-2~s^-1))
 itelab <- expression(ITE~~(mmol~CO[2]~mol~H[2]*O^-1))
 denslab <- expression(Stomatal~Density~~(mm^-2))
 treelab <- c( "Shoots", "Roots")
+
+boxlabs <- c("Aquaponics", "Soil")
+boxlabs2 <- rep(boxlabs, 3)
+boxlabs3 <- c("Aqua", "Soil")
+boxlabs4 <- rep(boxlabs3, 3)
+
+partlab <- c("shoots", "roots")
+
