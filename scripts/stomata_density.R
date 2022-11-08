@@ -1,16 +1,38 @@
 source("scripts/functions.R")
 source("scripts/plot_objects.R")
 
-sd <- read.csv("raw_data/stomata_density.csv")
+sd <- read.csv("raw_data/stomatadensity.csv")
   sd$date <- as.Date(sd$date, format = "%m/%d/%Y")
   #calculate density from FOV diameter
-  sd$sd_mm2 <- with(sd, (stomata_count/(3.14 * (fov_diam_mm/2)^2)))
+  sd$sd_mm2 <- with(sd, (stomata_count/(3.14 * (fov_mm/2)^2)))
                     
-sd_plant <- doBy::summaryBy(sd_mm2 ~ treatment + plant + date + week, data =sd, FUN=mean, 
-                           keep.names=TRUE)
+sd_plant <- doBy::summaryBy(sd_mm2 ~ treatment + species + plant + week, 
+                          data =sd, FUN=mean, keep.names=TRUE)
 
-sd_agg <- doBy::summaryBy(sd_mm2 ~ treatment +  week, data =sd, FUN=c(mean,se)) 
+sd_agg <- doBy::summaryBy(sd_mm2 ~ treatment + species, data =sd_plant, FUN=c(mean,se)) 
     sd_agg$treatment <- as.factor(sd_agg$treatment)
+    
+    
+##data for stats----
+lettuceaqua <- sd_plant[sd_plant$species == "S" & sd_plant$treatment == "A",]
+lettucesoil <- sd_plant[sd_plant$species == "S" & sd_plant$treatment == "C",]
+    
+brocaqua <- sd_plant[sd_plant$species == "B" & sd_plant$treatment == "A",]
+brocsoil <- sd_plant[sd_plant$species == "B" & sd_plant$treatment == "C",]
+    
+pacaqua <- sd_plant[sd_plant$species == "P" & sd_plant$treatment == "A",]
+pacsoil <- sd_plant[sd_plant$species == "P" & sd_plant$treatment == "C",]
+    
+##t-test lettuce
+lettuce_ttest <- t.test(lettuceaqua$sd_mm2, lettucesoil$sd_mm2, 
+                                  alternative = "two.sided") 
+
+broc_ttest <- t.test(brocaqua$sd_mm2, brocsoil$sd_mm2, 
+                              alternative = "two.sided")
+
+pac_ttest <- t.test(pacaqua$sd_mm2, pacsoil$sd_mm2, 
+                              alternative = "two.sided")
+    
 
 aqua <- sd_agg[sd_agg$treatment == "a",]
 soil <- sd_agg[sd_agg$treatment == "c",]

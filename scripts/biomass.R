@@ -1,11 +1,15 @@
+source("scripts/functions.R")
+
 biomass <- read.csv("raw_data/leafmassfinal.csv")
+        biomass$aboveground <- with(biomass, shoots + leafexcess_week1+ leafexcess_week2 + 
+                                      leafexcess_week3 + leafexcess_week4)
+        
+        biomass$totalbiomass <- with(biomass, aboveground + roots)
+        biomass$rs_ratio <- with(biomass, roots/aboveground)
 
-biomass$aboveground <- with(biomass, shoots + leafexcess_week1+ leafexcess_week2 + 
-                              leafexcess_week3 + leafexcess_week4)
+biomass_agg <- doBy::summaryBy(aboveground + roots + rs_ratio ~ treatment + species , 
+                            data =biomass, FUN=c(mean, sd, se), keep.names=TRUE)
 
-biomass$totalbiomass <- with(biomass, aboveground + roots)
-
-biomass$rs_ratio <- with(biomass, roots/aboveground)
 
 #plot objects ---------
 wp1 <- wesanderson::wes_palette("Darjeeling2") 

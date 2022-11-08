@@ -9,7 +9,7 @@ plantcols <- c( "darkgoldenrod4","forestgreen")
 
 pchs=c(15,16,17)
 
-specieslabs <- c("Broccoli", "Pac Choy", "Salanova")
+specieslabs <- c("broccoli", "pac choi", "salanova")
 
 ratio_lab <- "Root to Shoot ratio"
 biomasslab <- "Total Biomass (g)"
