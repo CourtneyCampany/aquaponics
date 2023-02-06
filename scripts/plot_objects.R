@@ -9,7 +9,7 @@ plantcols <- c( "darkgoldenrod4","forestgreen")
 
 pchs=c(15,16,17)
 
-specieslabs <- c("broccoli", "pac choi", "salanova")
+specieslabs <- c("Broccoli", "Pac Choi", "Salanova")
 
 ratio_lab <- "Root to Shoot ratio"
 biomasslab <- "Total Biomass (g)"
@@ -18,7 +18,10 @@ satlab <- expression(italic(A)[sat]~~(mu*mol~m^-2~s^-1))
 condlab <- expression(italic(g)[s]~~(mol~m^-2~s^-1))
 photolab <- expression(italic(A[n])~~(mu*mol~m^-2~s^-1))
 itelab <- expression(ITE~~(mmol~CO[2]~mol~H[2]*O^-1))
-denslab <- expression(Stomatal~Density~~(mm^-2))
+denslab <- expression(paste("Stomatal Density  (# m", m^"-2",")"), sep="")
+denslab2 <- expression(bold(paste("Stomatal Density  (# m", m^"-2",")"), sep=""))
+sizelab <- expression(paste("Stomatal Size  ", mu, m^-2, sep=""))
+
 treelab <- c( "Shoots", "Roots")
 
 boxlabs <- c("Aquaponics", "Soil")

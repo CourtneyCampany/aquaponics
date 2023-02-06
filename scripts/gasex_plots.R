@@ -53,7 +53,7 @@ soil <- gasex[gasex$treatment == "c",]
 # windows(7,7)
 
 jpeg(filename = "output/photoconductance.jpeg",
-     width = 8.4, height = 8.4, units = "in", res= 300)
+     width = 6, height = 6, units = "in", res= 300)
 
 par(mgp=c(2.5,.75,0), cex.lab=1.15,cex.axis=1.15, mfrow=c(2,1))
 #aqua

@@ -11,14 +11,14 @@ gasex <- read.csv("raw_data/gasexchange_master.csv")
   ##add CI/CA
 
 ##data for stats----
-lettuceaqua <- gasex[gasex$species == "S" & gasex$treatment == "a",]
-lettucesoil <- gasex[gasex$species == "S" & gasex$treatment == "c",]
+lettuceaqua <- gasex[gasex$species == "S" & gasex$treatment == "A",]
+lettucesoil <- gasex[gasex$species == "S" & gasex$treatment == "C",]
   
-brocaqua <- gasex[gasex$species == "B" & gasex$treatment == "a",]
-brocsoil <- gasex[gasex$species == "B" & gasex$treatment == "c",]
+brocaqua <- gasex[gasex$species == "B" & gasex$treatment == "A",]
+brocsoil <- gasex[gasex$species == "B" & gasex$treatment == "C",]
   
-pacaqua <- gasex[gasex$species == "P" & gasex$treatment == "a",]
-pacsoil <- gasex[gasex$species == "P" & gasex$treatment == "c",]
+pacaqua <- gasex[gasex$species == "P" & gasex$treatment == "A",]
+pacsoil <- gasex[gasex$species == "P" & gasex$treatment == "C",]
 
 ##t-test lettuce
 lettuce_ttest_photo <- t.test(lettuceaqua$A, lettucesoil$A, 
