@@ -96,3 +96,4 @@ visreg(pac_mod, "sd_mm2", by="treatment", overlay=TRUE) ##both negative but slop
 
 pac_interaction <- emmeans(pac_mod, ~ sd_mm2 * treatment)
 emmeans(pac_interaction, list(pairwise ~ sd_mm2 * treatment), adjust = "tukey")
+
