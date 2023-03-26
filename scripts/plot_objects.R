@@ -11,7 +11,7 @@ boxcols2 <- scales::alpha(boxcols, .6)
 
 pchs=c(15,16,17)
 
-specieslabs <- c("Broccoli", "Pac Choi", "Salanova")
+specieslabs <- c("Broccoli", "Pak Choi", "Salanova")
 
 ratio_lab <- "Root to Shoot ratio"
 biomasslab <- "Total Biomass (g)"

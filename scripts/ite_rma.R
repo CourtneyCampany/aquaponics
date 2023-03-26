@@ -53,8 +53,8 @@ summary(lettuce.lm)
 #interaction, treatment x week 
 
 #within and across treatments (use for by week comparisons)
-pairwise_interaction <- emmeans(lettuce.lme, ~ treatment* week)
-pairwise_treatment <- emmeans(lettuce.lme, ~ treatment )
+pairwise_interaction <- emmeans(lettuce.lm, ~ treatment* week)
+pairwise_treatment <- emmeans(lettuce.lm, ~ treatment )
 pairwise_week <- emmeans(lettuce.lme, ~ week )
 
 emmeans(pairwise_treatment, list(pairwise ~ treatment), adjust = "tukey")
@@ -115,7 +115,7 @@ emmeans(pacaqua.mod, list(pairwise ~ week), adjust = "tukey")
 ## whe singular fit with lme used simple model 
 #plot lettuce interaction plot
 with(broc, interaction.plot(week, treatment, ITE,
-     ylab = "mean of photosynthesis", xlab = "time", trace.label = "treatment"))
+     ylab = "mean of wue", xlab = "time", trace.label = "treatment"))
 
 #repeated measures lettuce
 broc.lm <- lm(log10(ITE) ~ treatment*week, data = broc)

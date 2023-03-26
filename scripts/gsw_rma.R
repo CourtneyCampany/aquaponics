@@ -42,7 +42,7 @@ pacsoil <- pac_noweek4[pac_noweek4$species == "P" & pac_noweek4$treatment == "C"
 
 #plot lettuce interation plot
 with(lettuce, interaction.plot(week, treatment, gsw,
-    ylab = "mean of photosynthesis", xlab = "time", trace.label = "treatment"))
+    ylab = "mean of gsw", xlab = "time", trace.label = "treatment"))
 
 #repeated measures lettuce
 lettuce.lme <- lm(sqrt(gsw) ~ treatment*week, data = lettuce)

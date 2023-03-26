@@ -57,3 +57,42 @@ visreg(asd_mod, "sd_mm2", by="treatment", overlay=TRUE)
 library(emmeans)
 emmeans(asd_mod, list(pairwise ~ sd_mm2:treatment), adjust = "tukey")
 
+##based on the graphs, are any of the species relationships actually significant??
+lettuce <- alldata[alldata$species == "S",]
+broc <- alldata[alldata$species == "B" ,]
+pac <- alldata[alldata$species == "P",]
+
+## lettuce
+lettuce_mod <- lm(A ~ sd_mm2 * treatment, data=lettuce)
+qqPlot(residuals(lettuce_mod))
+Anova(lettuce_mod) ##treatment only, no SD
+summary(lettuce_mod)
+visreg(lettuce_mod, "sd_mm2", by="treatment", overlay=TRUE)
+
+#photosynthesis not related to SD, but A differs between Aqua and Soil
+
+## broc
+broc_mod <- lm(A ~ sd_mm2 * treatment, data=broc)
+qqPlot(residuals(broc_mod))
+Anova(broc_mod) ##minor interaction with sd and treatment (otherwise not SD)
+summary(broc_mod)
+visreg(broc_mod, "sd_mm2", by="treatment", overlay=TRUE)##aqua appears related
+
+broc_interaction <- emmeans(broc_mod, ~ sd_mm2 * treatment)
+emmeans(broc_interaction, list(pairwise ~ sd_mm2 * treatment), adjust = "tukey")
+##slopes different, no relationships with soil, aqua = positive A vs sd
+
+brocaqua <- alldata[alldata$species == "B" & alldata$treatment == "A",]
+broc_mod2 <- lm(A ~ sd_mm2 , data=brocaqua)
+qqPlot(residuals(broc_mod2))
+Anova(broc_mod2) ##confirmed significant in only broc aqua
+
+## pak
+pac_mod <- lm(A ~ sd_mm2 * treatment, data=pac)
+qqPlot(residuals(pac_mod))
+Anova(pac_mod) ##interaction with sd and treatment, main effects are sig
+summary(pac_mod)
+visreg(pac_mod, "sd_mm2", by="treatment", overlay=TRUE) ##both negative but slopes differ
+
+pac_interaction <- emmeans(pac_mod, ~ sd_mm2 * treatment)
+emmeans(pac_interaction, list(pairwise ~ sd_mm2 * treatment), adjust = "tukey")

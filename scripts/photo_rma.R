@@ -23,7 +23,7 @@ gasex <- read.csv("raw_data/gasexchange_master.csv")
 lettuce <- gasex[gasex$species == "S",]
     lettuce$week <- droplevels(lettuce$week)
 broc <- gasex[gasex$species == "B" ,]
-broc$week <- droplevels(broc$week)
+  broc$week <- droplevels(broc$week)
 pac <- gasex[gasex$species == "P",]
   pac_noweek4 <- pac[pac$week  %in% c(1,2,3),]
   pac_noweek4$week <- droplevels(pac_noweek4$week)
@@ -49,7 +49,7 @@ lettuce.lme <- lm(A ~ treatment*week, data = lettuce)
 qqPlot(residuals(lettuce.lme))#pretty good
 plot(lettuce.lme) #skewed
 Anova(lettuce.lme)
-summary(lettuce.lme2)
+summary(lettuce.lme)
 #no interaction, treatment and week main effects
 
 #within and across treatments (use for by week comparisons)
@@ -78,15 +78,14 @@ emmeans(lettuceaqua.mod, list(pairwise ~ week), adjust = "tukey")
 ##photosynthesis dropped in week3         
 
 ##PACCHOI
+pac_stats <- pac_noweek4[pac_noweek4$A >2,]#remove two leaves that had shutdown
 
 #plot lettuce interaction plot
-with(pac_noweek4, interaction.plot(week, treatment, A,
+with(pac_stats, interaction.plot(week, treatment, A,
      ylab = "mean of photosynthesis", xlab = "time", trace.label = "treatment"))
-plot(A~week, data=pacaqua)
-plot(A~week, data=pacsoil)
 
 #repeated measures lettuce
-pac.lme <- lm(A ~ treatment*week, data = pac_noweek4)
+pac.lme <- lm(A ~ treatment*week, data = pac_stats)
 qqPlot(residuals(pac.lme))
 plot(pac.lme) 
 Anova(pac.lme)
@@ -100,6 +99,8 @@ pairwise_treatment <- emmeans(pac.lme, ~ treatment)
 emmeans(pairwise_treatment, list(pairwise ~ treatment), adjust = "tukey")
 pairwise_week <- emmeans(pac.lme, ~ week)
 emmeans(pairwise_week, list(pairwise ~ week), adjust = "tukey")
+pairwise_inter <- emmeans(pac.lme, ~ treatment * week)
+emmeans(pairwise_inter, list(pairwise ~ treatment * week), adjust = "tukey")
 ##A higher in aquaponics, decreases in weeks 1 both treatments
 
 ##treatment x time interaction (aqua > soil)
@@ -126,11 +127,10 @@ with(broc, interaction.plot(week, treatment, A,
 #repeated measures lettuce
 broc.lme <- lm(A ~ treatment*week, data = broc)
 qqPlot(residuals(broc.lme))#pretty good
-plot(broc.lme) #skewed
+plot(broc.lme) 
 Anova(broc.lme)
 summary(broc.lme)
-r.squaredGLMM(broc.lme)
-#mean effects only
+#main effects only
 
 #within and across treatments (use for by week comparisons)
 pairwise_treatment <- emmeans(broc.lme, ~ treatment )
