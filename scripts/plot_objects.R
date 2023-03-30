@@ -23,6 +23,9 @@ itelab <- expression(ITE~~(mmol~CO[2]~mol~H[2]*O^-1))
 denslab <- expression(paste("Stomatal Density  (# m", m^"-2",")"), sep="")
 denslab2 <- expression(bold(paste("Stomatal Density  (# m", m^"-2",")"), sep=""))
 sizelab <- expression(paste("Stomatal Size  ", mu, m^-2, sep=""))
+c13lab <-expression(paste(delta^{13}, "C (\u2030)"))
+nitrolab <- expression(Leaf~Nitrogen~~(g~g^-1))
+rootnitrolab <- expression(Root~Nitrogen~~(g~g^-1))
 
 treelab <- c( "Shoots", "Roots")
 

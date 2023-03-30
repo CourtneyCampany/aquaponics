@@ -44,7 +44,7 @@ with(lettuce, interaction.plot(week, treatment, sd_mm2,
 lettuce.lm <- lm(sd_mm2 ~ treatment * week,data = lettuce)
 qqPlot(residuals(lettuce.lm))#pretty good
 plot(lettuce.lm) 
-anova(lettuce.lm)
+anova(lettuce.lm) #interaction 
 summary(lettuce.lm)
 #interaction treatment and species
 
@@ -56,9 +56,8 @@ pairwise_week <- emmeans(lettuce.lm, ~ week )
 emmeans(pairwise_treatment, list(pairwise ~ treatment), adjust = "tukey")
 emmeans(pairwise_interaction, list(pairwise ~ treatment * week), adjust = "tukey")
 emmeans(pairwise_week, list(pairwise ~ week), adjust = "tukey")
-#sd higher in containers (0.0001)
-#sd changes in first two weeks
-#same on first week
+#sd higher in week 2 for soil, aqua doesnt change (0.0001)
+#SD in soil higher than aqua in weeks 2/3
 
 ##test are p value same if limit to just one way
 lettucesoil.lm<- lm(sd_mm2 ~ week, data = lettucesoil)
@@ -82,7 +81,7 @@ qqPlot(residuals(broc.lm))#pretty good
 plot(broc.lm) 
 anova(broc.lm)
 summary(broc.lm)
-##interaction with treatment and week
+##interaction with treatment and week (p=0.0148)
 
 #within and across treatments (use for by week comparisons)
 pairwise_treatment_broc <- emmeans(broc.lm, ~ treatment)
@@ -91,8 +90,10 @@ pairwise_week_broc <- emmeans(broc.lm, ~ week )
   pairs(pairwise_week_broc)
 pairwise_interaction_broc <- emmeans(broc.lm, ~ treatment * week )
   pairs(pairwise_interaction_broc)
-##SD higher in broccoli
-  #increases in week 2 for soil only
+
+emmeans(pairwise_interaction_broc, list(pairwise ~ treatment * week), adjust = "tukey")
+  ##SD always higher in broccoli
+  ##sd higher in week 2 for soil, aqua doesnt change (0.0148)
   
 ##test are p value same if limit to just one way
 brocsoil.lm<- lm(sd_mm2 ~ week, data = brocsoil)
@@ -123,6 +124,8 @@ pac.lm <- lm(sd_mm2 ~ treatment * week, data = pac)
 #within and across treatments (use for by week comparisons)
 pairwise_interaction_pac<- emmeans(pac.lm, ~ treatment * week )
 pairs(pairwise_interaction_pac)
+emmeans(pairwise_interaction_pac, list(pairwise ~ treatment * week), adjust = "tukey")
+
 
 pairwise_treatment_pac<- emmeans(pac.lm, ~ treatment)
 pairs(pairwise_treatment_pac)
