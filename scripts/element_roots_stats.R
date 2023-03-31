@@ -8,8 +8,8 @@ element <- read.csv("raw_data/elemental_roots.csv")
   element$uniqueid <- paste(element$species, element$treatment, sep="-")
   element$nmass <- element$n_perc/100
 
-# element_agg <- doBy::summaryBy(n_perc + cn_ratio + c13 ~ treatment + species , 
-#                                data =element, FUN=c(mean, sd, se), keep.names=TRUE)
+element_agg <- doBy::summaryBy(nmass + cn_ratio ~ treatment + species ,
+                               data =element, FUN=c(mean, se), keep.names=TRUE)
 
 #lettuce stats ----------
 lettuceaqua <- element[element$species == "S" & element$treatment == "A",]

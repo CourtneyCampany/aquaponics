@@ -2,15 +2,15 @@ source("scripts/functions.R")
 source("scripts/plot_objects.R")
 
 element <- read.csv("raw_data/elemental_leaves.csv")
-element$species <- as.factor(element$species)
-element$trial <- as.factor(element$trial)
-element$treatment <- as.factor(element$treatment)
-element$cn_ratio <- with(element, c_perc/n_perc)
-element$uniqueid <- paste(element$species, element$treatment, sep="-")
-element$nmass <- element$n_perc/100
+  element$species <- as.factor(element$species)
+  element$trial <- as.factor(element$trial)
+  element$treatment <- as.factor(element$treatment)
+  element$cn_ratio <- with(element, c_perc/n_perc)
+  element$uniqueid <- paste(element$species, element$treatment, sep="-")
+  element$nmass <- element$n_perc/100
 
-# element_agg <- doBy::summaryBy(n_perc + cn_ratio + c13 ~ treatment + species , 
-#                                data =element, FUN=c(mean, sd, se), keep.names=TRUE)
+element_agg <- doBy::summaryBy(nmass + cn_ratio + c13 ~ treatment + species ,
+                               data =element, FUN=c(mean, se), keep.names=TRUE)
 
 #lettuce stats and graphs ----------
 lettuceaqua <- element[element$species == "S" & element$treatment == "A",]
