@@ -35,7 +35,6 @@ brocsoil <- broc[broc$species == "B" & broc$treatment == "C",]
 pacaqua <- pac[pac$species == "P" & pac$treatment == "A",]
 pacsoil <- pac[pac$species == "P" & pac$treatment == "C",]
 
-
 #plot lettuce
 with(lettuce, interaction.plot(week, treatment, sd_mm2,
     ylab = "mean of stomatal density", xlab = "time", trace.label = "treatment"))

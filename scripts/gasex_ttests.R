@@ -1,16 +1,18 @@
+#read in functions that we need and all plot labels and colors
 source("scripts/functions.R")
 source("scripts/plot_objects.R")
 
+# read in gas exchange data
 gasex <- read.csv("raw_data/gasexchange_master.csv")
+# make variables into factors
   gasex$species <- as.factor(gasex$species)
   gasex$trial <- as.factor(gasex$trial)
   gasex$treatment <- as.factor(gasex$treatment)
+#calculate new variables 
   gasex$ITE <- with(gasex, A/(E*1000))
   gasex$CICA <- with (gasex, Ci/Ca)
 
-  ##add CI/CA
-
-##data for stats----
+##new dataframes by species and treatment----
 lettuceaqua <- gasex[gasex$species == "S" & gasex$treatment == "A",]
 lettucesoil <- gasex[gasex$species == "S" & gasex$treatment == "C",]
   

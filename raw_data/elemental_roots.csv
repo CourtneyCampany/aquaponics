@@ -1,4 +1,4 @@
-uga_id,id,species,trial,treatment,replicae,tissue,n_perc,c_perc,cn_ratio
+uga_id,id,species,trial,treatment,plant,tissue,n_perc,c_perc,cn_ratio
 121,S1A1,S,1,A,1,roots,4.98,37.65,7.56
 122,S1A2,S,1,A,2,roots,4.81,38.36,7.97
 123,S1A3,S,1,A,3,roots,4.8,36.04,7.5

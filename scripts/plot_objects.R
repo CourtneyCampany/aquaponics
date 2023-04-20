@@ -9,7 +9,7 @@ plantcols <- c( "darkgoldenrod4","forestgreen")
 boxcols <- c("white", "grey45")
 boxcols2 <- scales::alpha(boxcols, .6)
 
-pchs=c(15,16,17)
+pchs=c(15,16,17) #broc, pak, salanova
 
 specieslabs <- c("Broccoli", "Pak Choi", "Salanova")
 
@@ -24,8 +24,9 @@ denslab <- expression(paste("Stomatal Density  (# m", m^"-2",")"), sep="")
 denslab2 <- expression(bold(paste("Stomatal Density  (# m", m^"-2",")"), sep=""))
 sizelab <- expression(paste("Stomatal Size  ", mu, m^-2, sep=""))
 c13lab <-expression(paste(delta^{13}, "C (\u2030)"))
-nitrolab <- expression(Leaf~Nitrogen~~(g~g^-1))
+nitrolab <- expression(Shoot~Nitrogen~~(g~g^-1))
 rootnitrolab <- expression(Root~Nitrogen~~(g~g^-1))
+treatmentlab <- c("Aqua", "Soil", "Aqua", "Soil", "Aqua", "Soil")
 
 treelab <- c( "Shoots", "Roots")
 
