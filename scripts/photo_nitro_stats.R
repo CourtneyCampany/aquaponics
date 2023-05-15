@@ -21,7 +21,7 @@ gasex <- read.csv("raw_data/gasexchange_master.csv")
 photo_agg <- doBy::summaryBy(A ~ treatment + species + plant , 
                              data =gasex, FUN=mean, keep.names=TRUE)
 
-photo_lastweek <- gasex[gasex$week == 3, ] ##need to fix with broc week4
+# photo_lastweek <- gasex[gasex$week == 3, ] ##need to fix with broc week4
 
 element <- read.csv("raw_data/elemental_leaves.csv")
   element$species <- as.factor(element$species)
@@ -32,12 +32,12 @@ element <- read.csv("raw_data/elemental_leaves.csv")
 
 #Merge
 photonitro <- merge(photo_agg, element)
-photonitro_lastweek <- merge(photo_agg, element)
+# photonitro_lastweek <- merge(photo_lastweek, element)
 
 aqua <- photonitro[photonitro$treatment == "A",]
 container <- photonitro[photonitro$treatment == "C",]
 
-###model tests - species as random effect
+###model tests - species as random effect------------
 anitro_mod <- lmer(A ~ nmass * treatment + (1|species), data=photonitro)
 qqPlot(residuals(anitro_mod))#pretty good
 plot(anitro_mod) #pretty good
@@ -68,25 +68,25 @@ pairs(anitro_mod_slopes) ##slopes not different
 windows()
 visreg(anitro_mod, "nmass", by="treatment", overlay=TRUE)
 
-# 
-# 
-# ###model tests - species as fixed effect - not using right now
-# anitro_mod2 <- lmer(A ~ nmass * treatment * species +  (1|plant), data=photonitro)
-# qqPlot(residuals(anitro_mod2))#pretty good
-# plot(anitro_mod2) #pretty good
-# 
-# Anova(anitro_mod2, type=3)
-# summary(anitro_mod2)
-# r.squaredGLMM(anitro_mod2)
-# # R2m       R2c
-# # [1,] 0.9004234 0.9055184
-# 
-# # nmass:treatment:species = 0.0204842 *  
-# ##interaction with all 3
-# 
-# pairwise_interaction <- emmeans(anitro_mod2, ~ nmass * treatment * species)
-# pairs(pairwise_interaction)
-# 
+
+
+###model tests - species as fixed effect - not using right now---------------
+anitro_mod2 <- lmer(A ~ nmass * treatment * species + (1|plant), data=photonitro)
+qqPlot(residuals(anitro_mod2))#pretty good
+plot(anitro_mod2) #pretty good
+
+Anova(anitro_mod2, type=3)
+summary(anitro_mod2)
+r.squaredGLMM(anitro_mod2)
+# R2m       R2c
+# [1,] 0.9004234 0.9055184
+
+# nmass:treatment:species = 0.0204842 *
+##interaction with all 3
+
+pairwise_interaction <- emmeans(anitro_mod2, ~ nmass * treatment * species)
+pairs(pairwise_interaction)
+
 ##find interactions with visreg by splitting treatments to visualize
 anitro_aqua <- lmer(A ~ nmass * species + (1|plant), data=aqua)
   pairwise_aqua <- emmeans(anitro_aqua, ~ nmass *  species)

@@ -17,6 +17,9 @@ gasex <- read.csv("raw_data/gasexchange_master.csv")
   gasex$treatment <- as.factor(gasex$treatment)
   gasex$ITE <- with(gasex, A/(E*1000))
   gasex$week <- as.factor(gasex$week)
+  
+ite_week <- doBy::summaryBy(ITE ~ treatment + species, data =gasex, FUN=c(mean2,se)) 
+  
 
   
 #extract species ---------

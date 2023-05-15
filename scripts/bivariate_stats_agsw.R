@@ -12,18 +12,15 @@ library(car)
 library(plotrix)
 
 gasex <- read.csv("raw_data/gasexchange_master.csv")
+  gasex$treatment <- as.factor(gasex$treatment)
+  gasex$week <- as.factor(gasex$week)
+  gasex$species <- as.factor(gasex$species)
 
 soil <- gasex[gasex$treatment == 'C',]
 aqua <- gasex[gasex$treatment == 'A',]
 
-broc <- aqua[aqua$species == "B",]
-anova(lm(A ~ gsw , data=broc))
 
-broc2 <- soil[soil$species == "B",]
-test <- lm(A ~ gsw , data=broc2)
-visreg(test, "gsw", by="treatment", overlay=TRUE)
-
-#photo gs - simple model to check for treatment effects
+#photo gs - model with species as random--------------
 ags_mod <- lmer(A ~ gsw * treatment + (1|species), data=gasex)
 ###model tests
 qqPlot(residuals(ags_mod))#pretty good
@@ -50,37 +47,51 @@ pairs(ags_mod_slopes)
 ## as high rates likely begin to saturate A
 
 
-##run full model with inteaction (not using right now)
-# ags_mod2 <- lmer(A ~ gsw * treatment * species +  (1|plant), data=gasex)
-# 
-# pairwise_interaction <- emmeans(ags_mod2, ~ gsw * treatment * species)
-# pairs(pairwise_interaction) #hard to diagnose, use plotting to help
-# #summary of differences
-# # aqua b vs aqua P
-# # aqua b vs soil p
-# # soil b vs aqua p
-# # soil b vs soil p 
-# # aqua p vs aqua S
-# # soil P vs aqua S
-# 
-# ##find interactions with visreg by splitting treatments to visualize
-# agsw_aqua <- lmer(A ~ gsw * species + (1|plant), data=aqua)
-# pairwise_aqua <- emmeans(agsw_aqua, ~ gsw *  species)
-# pairs(pairwise_aqua) ##broc and pak differ, pak and salanova differ
-# Anova(agsw_aqua, type=3)
-# 
-# visreg(agsw_aqua, "gsw", by="species") 
-# #all positive but slopes likely differ
-# 
-# 
-# agsw_container <- lmer(A ~ gsw * species + (1|plant), data=container)
-# pairwise_soil <- emmeans(agsw_container, ~ gsw *  species)
-# pairs(pairwise_soil)
-# Anova(agsw_container, type=3) ##nmass by species 0.04873 *
-# visreg(agsw_container, "gsw", by="species")
-# #nmass positively coupled with photosynthesis broccoli and pak choi
-# #salanova, with lowest rates of A was not correlated with N content
+
+##model with species as fixed effect ---------------
+ags_mod2 <- lmer(A ~ gsw * treatment * species +  (1|week), data=gasex)
+###model tests
+qqPlot(residuals(ags_mod2))#pretty good
+plot(ags_mod2) #pretty good
+
+Anova(ags_mod2) #gsw * treatment * species (p<0.0001) there is a 3 way interaction
+# summary(ags_mod2)
+r.squaredGLMM(ags_mod2)
+# R2m       R2c
+# [1,] 0.8057455 0.8746618
+##small amount of variation due to week
+
+pairwise_interaction <- emmeans(ags_mod2, ~ gsw * treatment * species)
+pairs(pairwise_interaction) #hard to diagnose, use plotting to help
+#summary of differences
+# aqua b vs aqua P
+# aqua B vs soil P
+# soil B vs aqua P
+# soil b vs soil p
+# aqua p vs aqua S
+# soil P vs aqua S 
+
+##find interactions with visreg by splitting treatments to visualize
+agsw_aqua <- lmer(A ~ gsw * species + (1|week), data=aqua)
+pairwise_aqua <- emmeans(agsw_aqua, ~ gsw *  species)
+pairs(pairwise_aqua) ##broc and pak differ, pak and salanova differ
+Anova(agsw_aqua, type=3)
+
+visreg(agsw_aqua, "gsw", by="species")
+#all positive but slopes differ between broc and pak and pak and salanova. 
 
 
-  
-  
+agsw_container <- lmer(A ~ gsw * species + (1|week), data=soil)
+pairwise_soil <- emmeans(agsw_container, ~ gsw *  species)
+pairs(pairwise_soil)
+Anova(agsw_container, type=3) ## broc and pac differ, pac and sal differ
+visreg(agsw_container, "gsw", by="species")
+
+# An was positively  related to gs across species but slopes of this relationship
+# differed between species and treatments (gsw x treatment x species, p < 0.001)
+# In aquaponics, positive slopes of the A-gs relationship for broccoli and salanova 
+# both differed from pak choi. In soil treatments, positive slopes of the A-gs 
+# relationship differed between broccoli and pak choi.  By treatment, positive slopes
+# of the A-gs relationship did not differ within a species. Instead, a few instances
+# occurred where slopes differed across species (eg., aquaponics - broccoli vs soil - 
+# pak choi).

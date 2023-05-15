@@ -21,6 +21,7 @@ alldata <- merge(gasex, stomata, by=c('species', 'treatment', 'week', 'plant'), 
   alldata$species <- as.factor(alldata$species)
   alldata$trial <- as.factor(alldata$trial)
   alldata$treatment <- as.factor(alldata$treatment)
+  alldata$week <- as.factor(alldata$week)
   
 soil <- alldata[alldata$treatment == 'C',]
 aqua <- alldata[alldata$treatment == 'A',]
@@ -28,7 +29,6 @@ aqua <- alldata[alldata$treatment == 'A',]
 
 #photo sd - overall-----------------
 asd_mod <- lmer(A ~ sd_mm2 * treatment + (1|species), data=alldata)
-# asd_mod2 <- lmer(A ~ sd_mm2 * treatment * species +  (1|plant), data=alldata)
 
 #test assumptions
 qqPlot(residuals(asd_mod))#residual look good (no outliers)
@@ -110,3 +110,32 @@ anova(lm(A ~ sd_mm2, data=aqua))
 # pac_interaction <- emmeans(pac_mod, ~ sd_mm2 * treatment)
 # emmeans(pac_interaction, list(pairwise ~ sd_mm2 * treatment), adjust = "tukey")
 
+
+
+##model with species as fixed effect ---------------
+asd_mod2 <- lmer(A ~ sd_mm2 * treatment * species +  (1|week), data=alldata)
+###model tests
+qqPlot(residuals(asd_mod2))#pretty good
+plot(asd_mod2) #pretty good
+
+Anova(asd_mod2) #two interactions - sd * treatment and sd * species
+r.squaredGLMM(asd_mod2)
+# R2m       R2c
+# [1,] 0.6802788 0.7813289
+##small amount of variation due to week
+
+pairwise_treatment <- emmeans(asd_mod2, ~ sd_mm2 * treatment)
+pairs(pairwise_treatment) 
+#slopes of A -sd differed by treatment, far more negative slope when Sd increased in soil
+visreg(asd_mod2, "sd_mm2", by="treatment")
+
+pairwise_species<- emmeans(asd_mod2, ~ sd_mm2 * species)
+pairs(pairwise_species)
+# slopes of A-sd differed for broccoli and salanova differed from pak choi
+# A and SD appear decoupled in salanova but not in broc or pakschoi. 
+visreg(asd_mod2, "sd_mm2", by="species")
+
+# The relationship between An and SD differed by treatment (An * SD * treatment, p <
+# 0.001) and by species (An * SD * species, p < 0.001). Across all species, An declined
+# with more increasing SD in soil compared to aquaponics treatments. For individual 
+# species, An and SD appeared decoupled in salanova but not in broccoli or pak choi. 
