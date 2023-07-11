@@ -13,7 +13,6 @@ pchs=c(15,16,17) #broc, pak, salanova
 
 specieslabs <- c("Broccoli", "Pak Choi", "Salanova")
 
-ratio_lab <- "Root to Shoot ratio"
 biomasslab <- "Total Biomass (g)"
 boxlabs <- c("Aquaponics", "Containerized")
 satlab <- expression(italic(A)[sat]~~(mu*mol~m^-2~s^-1))
@@ -26,6 +25,7 @@ sizelab <- expression(paste("Stomatal Size  ", mu, m^-2, sep=""))
 c13lab <-expression(paste(delta^{13}, "C (\u2030)"))
 nitrolab <- expression(Shoot~Nitrogen~~(g~g^-1))
 rootnitrolab <- expression(Root~Nitrogen~~(g~g^-1))
+rootshootlab <- expression(Root:Shoot~Ratio~~(g~g^-1))
 treatmentlab <- c("Aqua", "Soil", "Aqua", "Soil", "Aqua", "Soil")
 
 treelab <- c( "Shoots", "Roots")
