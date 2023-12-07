@@ -45,7 +45,7 @@ mtext(specieslabs, 1, line=2.25, at=c(1.5, 3.5, 5.5), cex=1.25)
 text(1.5, 9, "*",cex=2.5, font=2)
 text(3.5, 13, "*",cex=2.5, font=2)
 text(5.5, 8, "*",cex=2.5, font=2)
-text(.55, 13.25, "(A)", cex=1.51)
+text(.55, 13.25, "A", cex=1.51, font=2)
 # dev.off()
 
 #biomasspartioning
@@ -60,7 +60,7 @@ axis(1, boxlabs2, at=c(1.4, 3.8, 6.2 ,8.6, 11, 13.4))
 mtext(specieslabs, 1, line=2.25, at=c(2.6, 7.4, 12.2),  cex=1.25)
 legend("topright", inset = c(-0.2, 0), fill = c("forestgreen", "chocolate3"), 
        legend=partlab, cex=1)
-text(x=1.3, .94, "(B)", cex=1.51)
+text(x=1.3, .94, "B", cex=1.51, font=2)
 dev.off()
 
 

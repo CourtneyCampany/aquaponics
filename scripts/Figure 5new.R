@@ -11,7 +11,7 @@ element <- read.csv("raw_data/elemental_leaves.csv")
 
 #boxplot leaf nitro --------
 
-jpeg(filename = "output/Figure4.jpeg",
+jpeg(filename = "output/Figure5new.jpeg",
      width = 8, height = 10, units = "in", res= 500)
 par(mgp=c(2.5,.75,0), cex.lab=1.25,cex.axis=1.25,mfrow=c(2,1))
 

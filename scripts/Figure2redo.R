@@ -45,7 +45,7 @@ axis(2, "Edible Shoot Biomass  (g)" , at=7.5, tick=FALSE, line=2)
 text(1.5, 9, "*",cex=2.5, font=2)
 text(3.5, 13, "*",cex=2.5, font=2)
 text(5.5, 8, "*",cex=2.5, font=2)
-text(.55, 13.25, "(A)", cex=1.51)
+text(.55, 13.25, "A", cex=1.51, font=2)
 # RS ratio
 par(mar=c(5,5,0,1))
 boxplot(biomass$rs_ratio ~ uniqueid, data=biomass, xaxt='n',varwidth=TRUE,
@@ -60,7 +60,7 @@ mtext(specieslabs, 1, line=2.25, at=c(1.5, 3.5, 5.5), cex=1.25)
 
 text(1.5, .4, "*",cex=2.5, font=2)
 text(5.5, .6, "*",cex=2.5, font=2)
-text(.55, .625, "(B)", cex=1.51)
+text(.55, .625, "B", cex=1.51, font=2)
 
 dev.off()
 
