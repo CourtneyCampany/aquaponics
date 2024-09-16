@@ -15,7 +15,7 @@ gasex <- read.csv("raw_data/gasexchange_master.csv")
   gasex$species <- as.factor(gasex$species)
   gasex$trial <- as.factor(gasex$trial)
   gasex$treatment <- as.factor(gasex$treatment)
-  gasex$ITE <- with(gasex, A/(E*1000))
+  gasex$ITE <- with(gasex, gsw)
   gasex$week <- as.factor(gasex$week)
   
 ite_week <- doBy::summaryBy(ITE ~ treatment + species, data =gasex, FUN=c(mean2,se)) 
@@ -88,7 +88,7 @@ with(pac_noweek4, interaction.plot(week, treatment, ITE,
 plot(ITE~week, data=pacaqua)
 plot(ITE~week, data=pacsoil)
 
-#repeated measures lettuce
+#repeated measures PACCHOI
 pac.lme <- lm(sqrt(ITE) ~ treatment*week, data = pac_noweek4)
 qqPlot(residuals(pac.lme))#pretty good
 plot(pac.lme) 

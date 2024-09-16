@@ -9,7 +9,7 @@ gasex <- read.csv("raw_data/gasexchange_master.csv")
   gasex$trial <- as.factor(gasex$trial)
   gasex$treatment <- as.factor(gasex$treatment)
 #calculate new variables 
-  gasex$ITE <- with(gasex, A/(E*1000))
+  gasex$ITE <- with(gasex, A/gsw)
   gasex$CICA <- with (gasex, Ci/Ca)
 
 ##new dataframes by species and treatment----

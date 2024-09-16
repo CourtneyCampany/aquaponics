@@ -38,9 +38,9 @@ boxplot(biomass$shoots ~ uniqueid, data=biomass, xaxt='n',varwidth=TRUE,
 # axis(1, boxlabs2, at=1:6)
 axis(2, "Edible Shoot Biomass  (g)" , at=7.5, tick=FALSE, line=2)
 # mtext(specieslabs, 1, line=2.25, at=c(1.5, 3.5, 5.5), cex=1.25)
-# stripchart(biomass$shoots ~ uniqueid, data = biomass,
-#            vertical = TRUE, method = "jitter",cex=1.25,
-#            pch = 16,  col= trtcols2, xaxt='n', add=TRUE) 
+stripchart(biomass$shoots ~ uniqueid, data = biomass,
+           vertical = TRUE, method = "jitter",cex=1.25,
+           pch = 16,  col= trtcols2, xaxt='n', add=TRUE)
 
 text(1.5, 9, "*",cex=2.5, font=2)
 text(3.5, 13, "*",cex=2.5, font=2)
@@ -54,9 +54,9 @@ boxplot(biomass$rs_ratio ~ uniqueid, data=biomass, xaxt='n',varwidth=TRUE,
 axis(1, boxlabs2, at=1:6)
 axis(2, "Root:Shoot Ratio  (%)" , at=.325, tick=FALSE, line=2)
 mtext(specieslabs, 1, line=2.25, at=c(1.5, 3.5, 5.5), cex=1.25)
-# stripchart(biomass$shoots ~ uniqueid, data = biomass,
-#            vertical = TRUE, method = "jitter",cex=1.25,
-#            pch = 16,  col= trtcols2, xaxt='n', add=TRUE) 
+stripchart(biomass$rs_ratio ~ uniqueid, data = biomass,
+           vertical = TRUE, method = "jitter",cex=1.25,
+           pch = 16,  col= trtcols2, xaxt='n', add=TRUE)
 
 text(1.5, .4, "*",cex=2.5, font=2)
 text(5.5, .6, "*",cex=2.5, font=2)
