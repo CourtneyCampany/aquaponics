@@ -60,3 +60,13 @@ pac_ttest_ITE <- t.test(pacaqua$ITE, pacsoil$ITE,
 
 pac_ttest_CICA <- t.test(pacaqua$CICA, pacsoil$CICA, 
                              alternative = "two.sided")
+
+## standard errors for table
+pac_aqua_ITE_se <- se(pacaqua$ITE) #1.495157
+pac_soil_ITE_se <- se(pacsoil$ITE) #3.836439
+
+broc_aqua_ITE_se <- se(brocaqua$ITE)#0.4128896
+broc_soil_ITE_se <- se(brocsoil$ITE)#2.135583
+
+lett_aqua_ITE_se <- se(lettuceaqua$ITE)#1.19565
+lett_soil_ITE_se <- se(lettucesoil$ITE)#2.378491
