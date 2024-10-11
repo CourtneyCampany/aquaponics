@@ -32,19 +32,19 @@ par(mgp=c(2.5,.75,0), cex.lab=1.25,cex.axis=1.25, mfrow=c(2,1),
 
 #totalbiomass by species------
 par(mar=c(0,5,1,1))
-boxplot(biomass$shoots ~ uniqueid, data=biomass, xaxt='n',varwidth=TRUE,
-        ylab="",border=trtcols,ylim=c(0,13.5),xlab="", outline=FALSE,
+boxplot(biomass$totalbiomass ~ uniqueid, data=biomass, xaxt='n',varwidth=TRUE,
+        ylab="",border=trtcols,ylim=c(0,15.5),xlab="", outline=FALSE,
         boxlwd=2.5, whisklwd=2.5,staplelwd=2.5)
 # axis(1, boxlabs2, at=1:6)
-axis(2, "Edible Shoot Biomass  (g)" , at=7.5, tick=FALSE, line=2)
+axis(2, "Total Biomass  (g)" , at=7.5, tick=FALSE, line=2)
 # mtext(specieslabs, 1, line=2.25, at=c(1.5, 3.5, 5.5), cex=1.25)
-stripchart(biomass$shoots ~ uniqueid, data = biomass,
+stripchart(biomass$totalbiomass ~ uniqueid, data = biomass,
            vertical = TRUE, method = "jitter",cex=1.25,
            pch = 16,  col= trtcols2, xaxt='n', add=TRUE)
 
-text(1.5, 9, "*",cex=2.5, font=2)
-text(3.5, 13, "*",cex=2.5, font=2)
-text(5.5, 8, "*",cex=2.5, font=2)
+text(1.5, 10, "*",cex=2.5, font=2)
+text(3.5, 14.5, "*",cex=2.5, font=2)
+text(5.5, 8.5, "*",cex=2.5, font=2)
 text(.55, 13.25, "A", cex=1.51, font=2)
 # RS ratio
 par(mar=c(5,5,0,1))
