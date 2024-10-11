@@ -5,6 +5,7 @@ wp2 <- wesanderson::wes_palette("Cavalcanti1")
 
 trtcols <- c(wp1[2], wp2[5])
 trtcols2 <- scales::alpha(trtcols, .6)
+trtcols3 <- scales::alpha(trtcols, .5)
 plantcols <- c( "darkgoldenrod4","forestgreen")
 boxcols <- c("white", "grey45")
 boxcols2 <- scales::alpha(boxcols, .6)

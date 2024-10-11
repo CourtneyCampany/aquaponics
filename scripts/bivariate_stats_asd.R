@@ -12,6 +12,7 @@ library(car)
 library(plotrix)
 library(lmerTest)
 library(effects)
+library(mgcv)
 
 gasex <- read.csv("raw_data/gasexchange_master.csv")
 
@@ -110,7 +111,20 @@ anova(lm(A ~ sd_mm2, data=aqua))
 # pac_interaction <- emmeans(pac_mod, ~ sd_mm2 * treatment)
 # emmeans(pac_interaction, list(pairwise ~ sd_mm2 * treatment), adjust = "tukey")
 
+##is gam better?
+asd_mod <- lmer(A ~ sd_mm2 * treatment + (1|species), data=alldata)
+summary(asd_mod)
+Anova(asd_mod)
 
+##A vs SD non-linear with GAM
+asd_gam <- gam(A ~ s(sd_mm2, by=treatment) + s(species, bs='re'), data=alldata)
+summary(asd_gam) #p<0.001
+anova(asd_gam)
+summary(asd_gam)$s.table
+
+AIC(asd_mod)
+AIC(asd_gam)
+#stick with linear - because of lower AIC scores.
 
 ##model with species as fixed effect ---------------
 asd_mod2 <- lmer(A ~ sd_mm2 * treatment * species +  (1|week), data=alldata)
@@ -139,3 +153,4 @@ visreg(asd_mod2, "sd_mm2", by="species")
 # 0.001) and by species (An * SD * species, p < 0.001). Across all species, An declined
 # with more increasing SD in soil compared to aquaponics treatments. For individual 
 # species, An and SD appeared decoupled in salanova but not in broccoli or pak choi. 
+

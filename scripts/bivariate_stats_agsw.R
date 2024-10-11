@@ -10,6 +10,7 @@ library(MuMIn)
 library(arm)
 library(car)
 library(plotrix)
+library(mgcv)
 
 gasex <- read.csv("raw_data/gasexchange_master.csv")
   gasex$treatment <- as.factor(gasex$treatment)
@@ -95,3 +96,18 @@ visreg(agsw_container, "gsw", by="species")
 # of the A-gs relationship did not differ within a species. Instead, a few instances
 # occurred where slopes differed across species (eg., aquaponics - broccoli vs soil - 
 # pak choi).
+
+##is gam better?
+ags_mod <- lmer(A ~ gsw * treatment + (1|species), data=gasex)
+summary(ags_mod)
+Anova(ags_mod)
+
+##A vs SD non-linear with GAM
+ags_gam <- gam(A ~ s(gsw, by=treatment) + s(species, bs='re'), data=gasex)
+summary(ags_gam) #p<0.001
+anova(ags_gam)
+summary(ags_gam)$s.table
+
+AIC(ags_mod)
+AIC(ags_gam)
+#stick with linear - because of lower AIC scores.

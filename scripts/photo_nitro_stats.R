@@ -42,7 +42,7 @@ anitro_mod <- lmer(A ~ nmass * treatment + (1|species), data=photonitro)
 qqPlot(residuals(anitro_mod))#pretty good
 plot(anitro_mod) #pretty good
 
-Anova(anitro_mod)
+Anova(anitro_mod) ##no interaction among treatments, nmass yes, treatment yes
 summary(anitro_mod)
 
 # nmass           5.0655  1   0.024406 * 
@@ -53,6 +53,25 @@ summary(anitro_mod)
 #photosynthesis varies by treatment (aqua higher)
 # no interaction
 
+##new tests after review -----
+windows()
+visreg(anitro_mod, "nmass", by="treatment", overlay=TRUE)
+visreg(anitro_mod, "nmass")
+
+pairwise_interaction <- emmeans(anitro_mod, ~ nmass * treatment)
+pairs(pairwise_interaction)
+
+#Slopes of relationship broadly differ between treatments, across species
+anitro_mod_slopes <- lstrends(anitro_mod, "treatment", var="nmass") #obtain slopes
+pairs(anitro_mod_slopes)
+# contrast estimate SE  df t.ratio p.value
+# A - C        33.5 71 113   0.472  0.6377
+##slopes not different by treatmen
+
+
+
+
+##old tests -------
 coef(summary(anitro_mod))[ , "Estimate"]
 ranef(anitro_mod)$species
 colMeans(ranef(anitro_mod)$species)
@@ -93,7 +112,7 @@ anitro_aqua <- lmer(A ~ nmass * species + (1|plant), data=aqua)
   pairs(pairwise_aqua)
   Anova(anitro_aqua, type=3)
 
-# visreg(anitro_aqua, "nmass", by="species")
+ visreg(anitro_aqua, "nmass", by="species")
 # #photosynthesis and nitrogen decoupled as demand saturates rates
 # #next steps - rates are near capacity at this light and temperature level
 # #true for species, slopes were flat or even slightly negative

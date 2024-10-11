@@ -25,7 +25,7 @@ sd_plant <- doBy::summaryBy(sd_mm2 ~ treatment + species + plant + week,
                             data =sd, FUN=mean, keep.names=TRUE)
 sd_plant$uniqueid <- paste(sd_plant$species, sd_plant$treatment, sep="-")
 
-#3 panel graph of WUE traits
+####3 panel graph of WUE traits
 jpeg(filename = "output/Figure4new_points.jpeg", width = 6, height = 12, units = "in", res= 500)
 par(mfrow=c(3,1),mgp=c(2.5,.75,0), cex.lab=1.25,  cex.axis = 1.25)
 
@@ -60,6 +60,7 @@ axis(1, labels=FALSE)
 
 ##SD
 par(mar=c(5,5,0,1))
+windows()
 boxplot(sd_plant$sd_mm2 ~ uniqueid, data=sd_plant, xaxt='n',varwidth=TRUE,
         ylab=denslab,border=trtcols,ylim=c(0,800),xlab="",outline=FALSE,
         boxlwd=2.5, whisklwd=2.5,staplelwd=2.5)

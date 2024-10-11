@@ -15,9 +15,6 @@ alldata <- merge(gasex, stomata, by=c('species', 'treatment', 'week', 'plant'), 
 soil <- alldata[alldata$treatment == 'C',]
 aqua <- alldata[alldata$treatment == 'A',]
 
-
-photo_lastweek <- gasex[gasex$week == 3, ] ##need to fix with broc week4
-
 element <- read.csv("raw_data/elemental_leaves.csv")
   element$species <- as.factor(element$species)
   element$trial <- as.factor(element$trial)
@@ -26,10 +23,10 @@ element <- read.csv("raw_data/elemental_leaves.csv")
   element$nmass <- element$n_perc/100
 
 
-# 2 possible approaches = average of A across weeks, or choose week closest to N harvest
+#linear models for photosynthesis x nitrogen
 photo_agg <- doBy::summaryBy(A ~ treatment + species + plant , 
-                             data =gasex, FUN=mean, keep.names=TRUE)
-
+                               data =gasex, FUN=mean, keep.names=TRUE )
+                             
 photonitro <- merge(photo_agg, element)
   photonitro$species <- as.factor(photonitro$species)
   photonitro$treatment <- as.factor(photonitro$treatment)
@@ -44,6 +41,11 @@ aquaponic <- photonitro[photonitro$treatment == 'A',]
 aquamod <- lm(A ~ nmass ,data=aquaponic)
 soilmod <- lm(A ~ nmass ,data=container)
 
+#nmass by species
+broc_mod <- lm(A ~ nmass ,data=photonitro[photonitro$species =="B",])
+pac_mod <- lm(A ~ nmass ,data=photonitro[photonitro$species =="P",])
+sal_mod <- lm(A ~ nmass ,data=photonitro[photonitro$species =="S",])
+
 aquamod2 <- lm(A ~ gsw ,data=gasex[gasex$treatment == "A",])
 soilmod2 <- lm(A ~ gsw ,data=gasex[gasex$treatment == "C",])
 
@@ -52,40 +54,31 @@ soilmod3 <- lm(A ~ sd_mm2 ,data=alldata[alldata$treatment == "C",])
 
 anmass_mod <- lm(A ~ nmass, data=photonitro)
 
-#loess regression
-#avsgs
-#create data set of only a vs gsa
-aqua_agsw <- aqua[na.omit(aqua$A), c(1:4, 11, 14)]
-soil_agsw <- soil[na.omit(soil$A), c(1:4, 11, 14)]
 
-loess_aqua_agsw <- loess(A ~ gsw ,data=aqua, span=.75)
-aqua$smooth_aqua <- predict(loess_aqua_agsw)
-# pred_aquar_se <-predict(loess_aqua_agsw, se=T)
-
-loess_soil_agsw <- loess(A ~ gsw ,data=soil_agsw, span=.8)
-soil_agsw$smooth_soil <- predict(loess_soil_agsw)
-
-#GAM
+#GAM - non-linear fits
 library(mgcv)
-#soil
-soilmod <- gam(A ~ s(gsw, k=5), data=soil_agsw)
 
-#predict
-#get appropriate vector of gs from soil plants
-gsdat <- soil_agsw[, "gsw"]
+##A vs gsw non-linear with GAM
+##match K to visual fit
+# agsw_mod_aqua <- gam(A ~ s(gsw, k=3), data=aqua)
+# summary(agsw_mod_aqua) #p<0.001
+# anova(agsw_mod_aqua)
+# 
+# agsw_mod_soil <- gam(A ~ s(gsw, k=4), data=soil)
+# summary(agsw_mod_soil) #p<0.001
+# 
+##A vs SD non-linear with GAM
+asd_mod_aqua <- gam(A ~ s(sd_mm2, k=4), data=aqua)
+summary(asd_mod_aqua) #p<0.001
 
-#generate sequence and then predict
-gssoil_seq <- seq(min(gsdat), max(gsdat), length=101)
-gssoil_pred <- predict(soilmod, newdata=data.frame(gsw=gssoil_seq), se.fit=TRUE)
-soiltest <- as.data.frame(gssoil_pred$fit)
-#ci and model fit
-soilupr <- gssoil_pred$fit + (2*gssoil_pred$se.fit)
-soillwr <- gssoil_pred$fit - (2*gssoil_pred$se.fit)
+asd_mod_soil <- gam(A ~ s(sd_mm2, k=4), data=soil)
+summary(asd_mod_soil) #p<0.001
 
 
-# jpeg(filename = "output/Figure6new.jpeg",width = 12, height = 6 ,units = "in", res= 500)
 
-windows(6,12)
+jpeg(filename = "output/Figure6reviewer.jpeg",width = 12, height = 6 ,units = "in", res= 500)
+
+# windows(12,6)
 par(mgp=c(2.5,.75,0), cex.lab=1.15,cex.axis=1.15,mfrow=c(1,3))
 
 #Panel 1 - A vs Nitro
@@ -96,42 +89,42 @@ points(A ~ nmass, data=aquaponic, col=trtcols2[1], pch=pchs[species],cex=1.25)
 points(A ~ nmass, data=container, col=trtcols2[2], pch=pchs[species],cex=1.25)
 # predline(aquamod, col=trtcols[1], lwd=2, lty=2)
 # predline(soilmod, col=trtcols[2], lwd=2, lty=2)
-predline(anmass_mod, col="black", lwd=2, lty=2)
+# predline(anmass_mod, col="black", lwd=2, lty=2)
+
+predline(broc_mod, col="black", lwd=2, lty=2)
+text(.072, 16.5, "Broccoli")
+predline(pac_mod, col="black", lwd=2, lty=2)
+text(.085, 20.1, "Pak Choi")
+predline(sal_mod, col="black", lwd=2, lty=2)
+text(.09, 13.6, "Salanova")
 
 legend("topright", legend = specieslabs, pch=pchs, col="black", bty="n", inset=.02)
 legend(.05,31, boxlabs, pch=16, col=trtcols, inset=0.02,  title="", bty='n') 
 
-text(0.1025, 7, expression(paste(R[cond]^{"2"}," = "," 0.37")), 1.25)
-text(0.1025, 5, expression(paste(R[marg]^{"2"}," = "," 0.90")), 1.25)
+# text(0.1025, 7, expression(paste(R[cond]^{"2"}," = "," 0.37")), 1.25)
+# text(0.1025, 5, expression(paste(R[marg]^{"2"}," = "," 0.90")), 1.25)
 text(0, 29.5, "A", cex=1.25, font=2)
 
 #Panel 2 - A vs GS
 par(mar=c(5,0,1,0))
 
-plot(A ~ gsw, data=alldata, type='n', yaxt='n', ylab="", xlab=condlab, ylim=c(0,30), xlim=c(0,1.7))
+plot(A ~ gsw, data=alldata, type='n', ylab="", yaxt='n', xlab="", ylim=c(0,30), xlim=c(0,2))
 axis(2, labels=FALSE)  
-points(A ~ gsw, data=aqua, col=trtcols2[1], pch=pchs[species],cex=1.25)
-points(A ~ gsw, data=soil, col=trtcols2[2], pch=pchs[species],cex=1.25)
-# predline(aquamod2, col=trtcols[1], lwd=2, lty=2)
-# predline(soilmod2, col=trtcols[2], lwd=2, lty=2)
-lines(x=soil_agsw[order(soil_agsw$gsw),"gsw"], 
-      y=soil_agsw[order(soil_agsw$gsw),"smooth_soil"], type='l',
-      lwd=4, lty=2, col=trtcols[2])
+par(new=TRUE)
+smoothplot(gsw, A, data=aqua, kgam=3, R="plant", ylab="", axes=FALSE,
+           xlab=condlab, ylim=c(0,30), xlim=c(0,1.7), linecols=trtcols[1], pch="")
+par(new=TRUE)
+smoothplot(gsw, A, data=soil, kgam=4, R="plant", ylab="", axes=FALSE,
+           xlab="", ylim=c(0,30), xlim=c(0,1.7), linecols=trtcols[2], pch="")
 
-lines(x=soil_agsw[order(soil_agsw$gsw),"gsw"], 
-      y=soil_agsw[order(soil_agsw$gsw),soiltest[1]], type='l',
-      lwd=4, lty=2, col=trtcols[2])
+points(A ~ gsw, data=aqua, col=trtcols3[1], pch=pchs[species],cex=1.25)
+points(A ~ gsw, data=soil, col=trtcols3[2], pch=pchs[species],cex=1.25)
 
-
-# legend("topleft", legend = specieslabs, pch=pchs, col="black", bty="n", inset=.02)
-# legend("topright", boxlabs, pch=16, col=trtcols, inset=0.02,  title="", bty='n') 
 text(0, 29.5, "B", cex=1.25, font=2)
-text(1.75, 7, expression(paste(R[cond]^{"2"}," = "," 0.78")), 1.25)
-text(1.75, 5, expression(paste(R[marg]^{"2"}," = "," 0.56")), 1.25)
 
 #Panel 23 - A vs SD
 par(mar=c(5,0,1,1))
-plot(A ~ sd_mm2, data=alldata, type='n', yaxt='n', ylab="", xlab=denslab, 
+plot(A ~ sd_mm2, data=alldata, type='n', yaxt='n', ylab="", xlab="", 
      ylim=c(0,30), xlim=c(0,850))
 axis(2, labels=FALSE)  
 points(A ~ sd_mm2, data=aqua, col=trtcols2[1], pch=pchs[species],cex=1.25)
@@ -143,8 +136,8 @@ predline(soilmod3, col=trtcols[2], lwd=2, lty=2)
 # legend("topright", boxlabs, pch=16, col=trtcols, inset=0.02,  title="", bty='n') 
 
 text(10, 29.5, "C", cex=1.25, font=2)
-text(850, 7, expression(paste(R[cond]^{"2"}," = "," 0.81")), 1.25)
-text(850, 5, expression(paste(R[marg]^{"2"}," = "," 0.25")), 1.25)
+# text(850, 7, expression(paste(R[cond]^{"2"}," = "," 0.81")), 1.25)
+# text(850, 5, expression(paste(R[marg]^{"2"}," = "," 0.25")), 1.25)
 
 dev.off()
 
