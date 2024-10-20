@@ -184,7 +184,7 @@ smoothplot <- function(x,y,g=NULL,data,
         if(!inherits(fits[[i]], "try-error")){
           p <- predict(fits[[i]],nd,se.fit=TRUE)
           addpoly(nd$X, p$fit-2*p$se.fit, p$fit+2*p$se.fit, col=polycolor)
-          lines(nd$X, p$fit, col=linecols[i], lwd=2)
+          lines(nd$X, p$fit, col=linecols[i], lwd=2, lty=2)
         }
       }
       if(fittype == "lm"){
