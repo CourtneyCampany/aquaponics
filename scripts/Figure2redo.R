@@ -45,7 +45,7 @@ stripchart(biomass$totalbiomass ~ uniqueid, data = biomass,
 text(1.5, 10, "*",cex=2.5, font=2)
 text(3.5, 14.5, "*",cex=2.5, font=2)
 text(5.5, 8.5, "*",cex=2.5, font=2)
-text(.55, 13.25, "A", cex=1.51, font=2)
+text(.55, 15, "A", cex=1.51, font=2)
 # RS ratio
 par(mar=c(5,5,0,1))
 boxplot(biomass$rs_ratio ~ uniqueid, data=biomass, xaxt='n',varwidth=TRUE,

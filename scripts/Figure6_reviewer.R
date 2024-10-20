@@ -87,9 +87,7 @@ plot(A ~ nmass, data=photonitro, type='n', ylab=photolab, xlab=nitrolab, ylim=c(
      xlim=c(0,.1))
 points(A ~ nmass, data=aquaponic, col=trtcols2[1], pch=pchs[species],cex=1.25)
 points(A ~ nmass, data=container, col=trtcols2[2], pch=pchs[species],cex=1.25)
-# predline(aquamod, col=trtcols[1], lwd=2, lty=2)
-# predline(soilmod, col=trtcols[2], lwd=2, lty=2)
-# predline(anmass_mod, col="black", lwd=2, lty=2)
+
 
 predline(broc_mod, col="black", lwd=2, lty=2)
 text(.072, 16.5, "Broccoli")
@@ -103,7 +101,7 @@ legend(.05,31, boxlabs, pch=16, col=trtcols, inset=0.02,  title="", bty='n')
 
 # text(0.1025, 7, expression(paste(R[cond]^{"2"}," = "," 0.37")), 1.25)
 # text(0.1025, 5, expression(paste(R[marg]^{"2"}," = "," 0.90")), 1.25)
-text(0, 29.5, "A", cex=1.25, font=2)
+text(0, 30, "A", cex=1.5, font=2)
 
 #Panel 2 - A vs GS
 par(mar=c(5,0,1,0))
@@ -120,11 +118,11 @@ smoothplot(gsw, A, data=soil, kgam=4, R="plant", ylab="", axes=FALSE,
 points(A ~ gsw, data=aqua, col=trtcols3[1], pch=pchs[species],cex=1.25)
 points(A ~ gsw, data=soil, col=trtcols3[2], pch=pchs[species],cex=1.25)
 
-text(0, 29.5, "B", cex=1.25, font=2)
+text(0, 30, "B", cex=1.5, font=2)
 
 #Panel 23 - A vs SD
 par(mar=c(5,0,1,1))
-plot(A ~ sd_mm2, data=alldata, type='n', yaxt='n', ylab="", xlab="", 
+plot(A ~ sd_mm2, data=alldata, type='n', yaxt='n', ylab="", xlab=denslab, 
      ylim=c(0,30), xlim=c(0,850))
 axis(2, labels=FALSE)  
 points(A ~ sd_mm2, data=aqua, col=trtcols2[1], pch=pchs[species],cex=1.25)
@@ -135,7 +133,7 @@ predline(soilmod3, col=trtcols[2], lwd=2, lty=2)
 # legend("topleft", legend = specieslabs, pch=pchs, col="black", bty="n", inset=.02)
 # legend("topright", boxlabs, pch=16, col=trtcols, inset=0.02,  title="", bty='n') 
 
-text(10, 29.5, "C", cex=1.25, font=2)
+text(10, 30, "C", cex=1.5, font=2)
 # text(850, 7, expression(paste(R[cond]^{"2"}," = "," 0.81")), 1.25)
 # text(850, 5, expression(paste(R[marg]^{"2"}," = "," 0.25")), 1.25)
 

@@ -53,9 +53,8 @@ soilmod3 <- lm(A ~ sd_mm2 ,data=alldata[alldata$treatment == "C",])
 anmass_mod <- lm(A ~ nmass, data=photonitro)
 
 
-jpeg(filename = "output/Figure6new.jpeg",width = 12, height = 6 ,units = "in", res= 500)
+jpeg(filename = "output/Figure6review.jpeg",width = 12, height = 6 ,units = "in", res= 500)
 
-# windows(6,12)
 par(mgp=c(2.5,.75,0), cex.lab=1.15,cex.axis=1.15,mfrow=c(1,3))
 
 #Panel 1 - A vs Nitro
@@ -105,8 +104,8 @@ predline(soilmod3, col=trtcols[2], lwd=2, lty=2)
 # legend("topright", boxlabs, pch=16, col=trtcols, inset=0.02,  title="", bty='n') 
 
 text(10, 29.5, "C", cex=1.25, font=2)
-text(850, 7, expression(paste(R[cond]^{"2"}," = "," 0.81")), 1.25)
-text(850, 5, expression(paste(R[marg]^{"2"}," = "," 0.25")), 1.25)
+# text(850, 7, expression(paste(R[cond]^{"2"}," = "," 0.81")), 1.25)
+# text(850, 5, expression(paste(R[marg]^{"2"}," = "," 0.25")), 1.25)
 
 dev.off()
 

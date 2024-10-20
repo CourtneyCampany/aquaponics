@@ -101,13 +101,23 @@ visreg(agsw_container, "gsw", by="species")
 ags_mod <- lmer(A ~ gsw * treatment + (1|species), data=gasex)
 summary(ags_mod)
 Anova(ags_mod)
+r.squaredGLMM(ags_mod)
 
-##A vs SD non-linear with GAM
+##A vs GS non-linear with GAM
 ags_gam <- gam(A ~ s(gsw, by=treatment) + s(species, bs='re'), data=gasex)
+gam.check(ags_gam)
 summary(ags_gam) #p<0.001
-anova(ags_gam)
+anova.gam(ags_gam)
 summary(ags_gam)$s.table
+
+
+library(marginaleffects)
+plot_predictions(ags_gam, condition=c('gsw', 'treatment'), type = 'link')
+
+plot_slopes(ags_gam, variables = 'gsw',
+            condition = c('gsw', 'treatment'),
+            type = 'link')
 
 AIC(ags_mod)
 AIC(ags_gam)
-#stick with linear - because of lower AIC scores.
+#use nonlinear
